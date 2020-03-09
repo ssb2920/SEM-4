@@ -1,0 +1,1389 @@
+////////////////////////////////////////////////////////////////////////SORT
+#include<stdio.h>
+#define max 100
+void bubblesort(int a[],int n)
+{	int i,j,temp;
+	for(i=0;i<n-1;i++)
+	{	for(j=0;j<n-i-1;j++)
+		{	if(a[j]>a[j+1])
+			{	temp=a[j];
+				a[j]=a[j+1];
+				a[j+1]=temp;
+			}	
+		}	
+	}
+	printf("Sorted array is\n");
+	for(i=0;i<n;i++)
+		printf("%d\t",a[i]);
+}
+void insertionsort(int a[],int n)
+{	int i,j,temp;
+	for(i=1;i<n;i++)
+	{	temp=a[i];
+		j=i-1;
+		while(temp<a[j] && j>=0)
+		{ a[j+1]=a[j];
+			j--;	
+		}
+		a[j+1]=temp;
+	}
+	printf("Sorted array is\n");
+	for(i=0;i<n;i++)
+		printf("%d\t",a[i]);
+}
+void selectionsort(int a[],int n)
+{	int i, j,min,temp;
+	for(i=0;i<n;i++)
+	{	min=a[i];
+		for(j=i+1;j<n;j++)
+		{	if(a[j]<min)
+			{	temp=a[j];
+				a[j]=min;
+				min=temp;
+			}
+		}
+	}
+
+	printf("Sorted array is\n");
+	for(i=0;i<n;i++)
+		printf("%d\t",a[i]);
+}
+int partition(int a[],int l,int h)
+{	int pivot=a[l];
+	int i=l;
+	int j=h;
+	int temp;
+	while(i<j)
+	{	do{	i++;
+		}while(a[i]<=pivot);
+		do{j--;
+		}while(a[j]>pivot);
+		if(i<j)
+		{	temp=a[i];
+			a[i]=a[j];
+			a[j]=temp;
+		}	
+	}
+	temp=a[l];
+	a[l]=a[j];
+	a[j]=temp;
+	return j;
+}
+void quicksort(int a[],int l,int h)
+{	int j;
+	if(l<h)
+	{	j=partition(a,l,h);
+		quicksort(a,l,j);
+		quicksort(a,j+1,h);
+	}
+}
+void merge(int a[],int l,int m,int h)
+{	int i,j,k,c[h];
+	i=l;j=m+1;k=0;
+	while(i<=m && j<=h)
+	{	if(a[i]<a[j])
+			c[k++]=a[i++];
+		else
+			c[k++]=a[j++];
+	}
+	while(i<=m)
+		c[k++]=a[i++];
+	while(j<=h)
+		c[k++]=a[j++];
+	for(i=l,k=0;i<=h;i++,k++)
+		a[i]=c[k];
+}
+void mergesort(int a[],int l,int h)
+{	int m;
+	if(l<h)
+	{	m=(l+h)/2;
+		mergesort(a,l,m);
+		mergesort(a,m+1,h);
+		merge(a,l,m,h);
+	}
+}
+void main()
+{	int a[max],n,i;
+	printf("Enter no. of elements\n");
+	scanf("%d",&n);
+	printf("Enter elements\n");
+	for(i=0;i<n;i++)
+	{	scanf("%d",&a[i]);	
+	}
+	bubblesort(a,n);
+	insertionsort(a,n);
+	selectionsort(a,n);	
+	quicksort(a,0,n);
+	printf("Sorted array is\n");
+	for(i=0;i<n;i++)
+		printf("%d\t",a[i]);
+	mergesort(a,0,n-1);
+	printf("Sorted array is\n");
+	for(i=0;i<n;i++)
+		printf("%d\t",a[i]);
+}
+
+/////////////////////////////////////////////////////////////////////////Minmax
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct mm
+{
+	int min;
+	int max;
+}mm;
+mm minmax(int a[],int low,int high)
+{
+	mm l,r,res;
+	int mid;
+	if(low+high>=0)
+	{
+		if(low==high)
+		{
+			res.min=a[low];
+			res.max=a[low];
+		}
+		else if (low+1==high)
+		{
+			if(a[low]>=a[high])
+			{
+				res.min=a[high];
+				res.max=a[low];
+			}
+			else
+			{
+				res.min=a[low];
+				res.max=a[high];				
+			}
+		}
+		else
+		{
+			mid=(low+high)/2;
+			l=minmax(a,low,mid);
+			r=minmax(a,mid+1,high);
+			if(l.min<r.min)
+				res.min=l.min;
+			else
+				res.min=r.min;
+			if(l.max>r.max)
+				res.max=l.max;
+			else
+				res.max=r.max;
+		}
+		
+	}
+	printf("min=%d max=%d",res.min,res.max);
+	return res;
+}
+void main()
+{	
+	mm res;
+	int n,i,a[10];
+	printf("Enter the size of the array : ");
+	scanf("%d",&n);	
+	for(i=0;i<n;i++)
+	{
+		printf("Enter the %d element of the array : ",i+1);
+		scanf("%d",&a[i]);
+	}
+	res=minmax(a,0,n-1);
+	printf("The minimum element of array is %d and maximum is %d",res.min,res.max);
+}
+
+//////////////////////////////////////////////////////////////////////////Fractional knapsack
+#include<stdio.h>
+#include<stdlib.h>
+ struct mm
+{
+    float weight,ratio,profit,frac;
+    int no;
+};
+void main()
+{
+    struct mm  s[10],temp;
+    int i,j,n;
+    float x,f,tp;
+    printf("Enter the number of items : ");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        s[i].no=i+1;
+        printf("Enter the weight of item %d: ",i);
+        scanf("%f",&s[i].weight);
+        printf("Enter the profit of item %d: ",i);
+        scanf("%f",&s[i].profit);
+        s[i].ratio=s[i].profit/s[i].weight;
+        printf("The ratio of profit/weight :%f \n",s[i].ratio);
+    }
+    printf("Enter the limit : ");
+    scanf("%f",&x);
+    printf("\n number   weight   ratio \n");
+    for(i=0;i<n;i++)
+        printf("%d   %f    %f   \n",s[i].no,s[i].weight,s[i].ratio);
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<i;j++)
+        {
+            if(s[j].ratio<s[j+1].ratio)
+            {
+                temp=s[j];
+                s[j]=s[j+1];
+                s[j+1]=temp;
+            }
+        }
+    }
+    printf(" number   weight    ratio  \n");
+    for(i=0;i<n;i++)
+        printf("%d    %f    %f   \n",s[i].no,s[i].weight,s[i].ratio);
+    i=0;
+    tp=0;
+    while(x!=0)
+    {
+        if(x>s[i].weight)
+        {
+            s[i].frac=1;
+            x=x-s[i].weight;
+            tp=tp+s[i].profit;
+            s[i].ratio=tp;
+        }
+        else if(x<s[i].weight)
+        {
+            f=x/s[i].weight;
+            s[i].frac=f;
+            tp=tp+f*s[i].profit;
+            s[i].ratio=tp;
+            x=0;
+        }
+        i++;
+    }
+    printf("number   weight   tp   profit   frac \n");
+    for(i=0;i<n;i++)
+        printf("%d   %f   %f   %f    %f   \n",s[i].no,s[i].weight,s[i].ratio,s[i].profit,s[i].frac);
+    printf("The total profit is : %f",tp);
+}
+
+//////////////////////////////////////////////////////////////////////////Dijkstras
+#include<stdio.h>
+#define max 10 
+typedef struct node
+{
+    int dist,no,pred;
+}node;
+typedef struct mat
+{
+    int a[max][max];
+    int v[max];
+    int nv[max];
+    node e[max];
+}mat;
+void display_mat(mat m,int n)
+{
+    int i,j;
+    printf("The matrix is:");
+    for(i=0;i<n;i++)
+    {
+        printf("\n");
+        for(j=0;j<n;j++)
+        {
+            if(m.a[i][j]==1000)
+                printf("-  ");
+            else
+                printf("%d  ",m.a[i][j]);
+        }
+    }
+}
+mat create_mat(mat m,int n)
+{
+    int i,j,k,r;
+    for(i=0;i<max;i++)
+    {
+        for(j=0;j<max;j++)
+            m.a[i][j]=1000;
+    }
+    for(i=0;i<n;i++)
+    {   while(1)
+        {
+            printf("\nEnter the number of neighbours of %d:",i+1);
+            scanf("%d",&k);
+            if(k>n-1)
+                printf("\nno. of nodes out of bound.");
+            else
+                break;
+        }
+        
+        for(j=0;j<k;j++)
+        {
+            printf("\nEnter the neighbour:");
+            scanf("%d",&r);
+            if(i+1==r)
+            {
+                printf("\nThere cannot be loops .");
+                j--;
+                continue;
+            }
+            printf("\nEnter the distance:");
+            scanf("  %d",&(m.a[i][r-1]));
+        }
+    }
+    return m;
+}
+
+void disp(mat m,int n)
+{
+    int i;
+    printf("\nno.   dist   pred");
+    for(i=0;i<n;i++)
+    {   printf("\n");
+        if(m.e[i].pred==-1&&m.e[i].dist==1000)
+            printf("%d   -   -",m.e[i].no);
+        else if(m.e[i].dist==1000)
+            printf("%d   -  %d",m.e[i].no,m.e[i].pred);
+        else
+            printf("%d  %d  %d",m.e[i].no,m.e[i].dist,m.e[i].pred);
+    }
+}
+
+int isp(int a[],int n,int x)
+{   int i;
+    for(i=0;i<n;i++)
+    {
+        if(x==a[i])
+            return 1;
+    }
+    return 0;
+}
+
+void print(mat m,int s)
+{
+    if(m.e[s-1].pred==-1)
+        printf("%d",s);
+    else
+    {
+        print(m,m.e[s-1].pred);
+        printf("->%d",s);
+    }
+}
+
+mat dij(mat m,int n)
+{
+    int i,j,small,w,k=n-1,c;
+    for(i=0;i<n-1;i++)
+    {   
+        small=m.e[m.nv[0]-1].dist;
+        w=m.nv[0];
+        for(j=0;j<k;j++)
+        {
+            if(small>m.e[m.nv[j]-1].dist)
+            {
+                w=m.nv[j];
+                small=m.e[w-1].dist;
+            }
+        }
+        m.v[i+1]=w;                             //adding visited element in visited array
+        j=0;
+        while(w!=m.nv[j])                       //removing the visited element
+            j++;
+        for(c=j;c<k;c++)                        
+            m.nv[c]=m.nv[c+1];
+        k--;
+        for(j=0;j<n;j++)                        //finding neighbours
+        {
+            if(m.a[w-1][j]!=1000 && isp(m.v,i+1,j+1)!=1)
+            {
+                if(m.e[j].dist>(m.e[w-1].dist+m.a[w-1][j]))
+                {
+                    m.e[j].dist=(m.e[w-1].dist+m.a[w-1][j]);
+                    m.e[j].pred=w;
+                    printf("\nchange occured in %d to %d",w,j+1);
+                }
+                else
+                    printf("\nNo change in %d to %d",w,j+1);
+            }
+        }
+        disp(m,n);
+    }
+    printf("\n Visited Array :\n");
+    for(i=0;i<n;i++)                            //printing result
+    {
+        if(i==n-1)
+            printf("%d",m.v[i]);
+        else
+            printf("%d->",m.v[i]);
+    }
+    for(i=0;i<n;i++)
+        if(i+1!=m.v[0])
+        {
+            printf("\nThe shortest path from %d to %d : ",m.v[0],i+1);
+            print(m,i+1);
+        }
+    return m;
+}
+
+void main()
+{
+    mat m;
+    int n,i,u,k=0;
+    printf("\nEnter the number of nodes :");
+    scanf("%d",&n);
+    m=create_mat(m,n);
+    display_mat(m,n);
+    printf("\nEnter the source node:");
+    scanf("%d",&u);
+    for(i=0;i<n;i++)
+    {   
+        if(i==u-1)
+        {
+            m.v[0]=u;
+            m.e[u-1].no=u;
+            m.e[u-1].dist=1000;
+            m.e[u-1].pred=-1;
+        }
+        else
+        {
+            m.e[i].no=i+1;
+            m.e[i].dist=m.a[u-1][i];
+            m.e[i].pred=u;
+            m.nv[k++]=i+1;
+        }
+    }
+    disp(m,n);
+    m=dij(m,n);
+}
+
+////////////////////////////////////////////////////////////////////////////////Prims
+#include<stdio.h>
+#define max 10
+
+void display_mat(int a[max][max],int n)
+{
+    int i,j;
+    printf("\nThe matrix is:");
+    for(i=0;i<n;i++)
+    {
+        printf("\n");
+        for(j=0;j<n;j++)
+        {
+            if(a[i][j]==1000)
+                printf("-  ");
+            else
+                printf("%d  ",a[i][j]);
+        }
+    }
+}
+
+int create_mat(int a[max][max],int n)
+{
+    int i,j,k,r,s,d,e=0;
+    for(i=0;i<max;i++)
+    {
+        for(j=0;j<max;j++)
+            a[i][j]=1000;
+    }
+    printf("Enter the number of edges(loops,edges,parallel edges):");
+    scanf("%d",&k);
+    for(i=0;i<k;i++)    
+    {   
+        printf("Enter the source:");
+        scanf("%d",&s);
+        printf("Enter the destination :");
+        scanf("%d",&d);
+        if(s==d)
+        {
+            printf("There cannot be loops .\n");
+            continue;
+        }
+        printf("Enter the distance:");
+        scanf("%d",&r);
+        if(a[s-1][d-1]>r)
+        {
+            a[s-1][d-1]=r;    
+            a[d-1][s-1]=r;
+            e++;
+        }
+        else
+        {
+            printf("The parallel edge is of larger value\n");
+        }
+    }
+    return e;
+}
+
+void compute(int a[max][max],int f[max][max],int n)
+{
+    int b[max],v[max][max],i,j,k=0,g=n,l[n],min,minr,minc,flag,sum=0;
+    for(i=0;i<n;i++)
+    {
+        b[i]=0;
+        l[i]=-1;
+        for(j=0;j<n;j++)
+        {
+            v[i][j]=0;
+            f[i][j]=1000;
+        }
+    }
+    l[k]=0;
+    g--;
+    do
+    {
+        min=a[l[0]][0];
+        minr=l[0];
+        minc=0;
+        flag=0;
+        for(i=0;i<=k;i++)
+        {   
+            for(j=0;j<n;j++)
+            {
+                if(a[l[i]][j]<min && v[l[i]][j]!=1)
+                {   flag=1;
+                    min=a[l[i]][j];
+                    minc=j;
+                    minr=l[i];
+                }
+            }
+        }
+        if(flag==1)
+        {
+            if(b[minr]==0 || b[minc]==0)
+            {
+                f[minr][minc]=f[minc][minr]=min;
+                b[minr]=b[minc]=1;
+                printf("\nthe edge %d->%d has weight %d",minr+1,minc+1,min);
+                sum+=min;
+                v[minc][minr]=v[minr][minc]=1;
+                for(i=0;i<n;i++)
+                {
+                    if(l[i]==-1)
+                    {
+                        l[i]=minc;
+                        k++;
+                        g--;
+                        break;
+                    }
+                }
+            }
+            else
+                v[minc][minr]=v[minr][minc]=1; 
+        }
+    }while(g!=0);
+    printf("\nThe total cost of spanning tree is %d",sum);
+}
+
+void main()
+{
+    int r,a[max][max],f[max][max],n,u,k=0;
+    printf("Enter the number of vertices :");
+    scanf("%d",&n);
+    r=create_mat(a,n);
+    compute(a,f,n);
+}
+
+//////////////////////////////////////////////////////////////////////////// 01knapsack
+#include<stdio.h>
+#define max 10
+
+void find(int a[max][2] ,int n,int m)
+{
+	int k,l,c,i,t=0,w,f[n][2],v[n+1][m+1];
+	for(i=0;i<=n;i++)
+	{
+		for(w=0;w<=m;w++)
+			v[i][w]=0;
+	}
+	for(i=0;i<n+1;i++)
+	{
+		for(w=0;w<m+1;w++)
+		{	
+			if(i==0 || w==0)
+				v[i][w]=0;
+			else
+			{
+				if(a[i-1][1]>w)
+					v[i][w]=v[i-1][w];
+				else if(a[i-1][1]<=w)
+				{	
+					c=a[i-1][0]+v[i-1][(w-a[i-1][1])];
+					if(v[i-1][w]>c)
+						v[i][w]=v[i-1][w];
+					else
+						v[i][w]=c;
+				}
+			}
+		}
+	}
+	printf("\nThe matrix for knapsack problem is:\n  ");
+	for(l=0;l<=m;l++)
+		printf("%d ",l);
+	for(k=0;k<=n;k++)
+	{
+		printf("\n%d ",k);
+		for(l=0;l<=m;l++)
+			printf("%d ",v[k][l]);
+	}
+	i=n;
+	w=m;
+	k=0;
+	while(i!=0 && w!=0)
+	{
+		if(v[i][w]!=v[i-1][w])
+		{
+		    f[k][0]=a[i-1][0];
+		    f[k++][1]=a[i-1][1];
+		    w-=a[i-1][1];
+			i--;
+		}
+		else
+			i--;
+	}
+	printf("\nThe final items in bag:\nitem val weight");
+    for(i=0;i<k;i++)
+    {
+        printf("\n %d  %d   %d",i+1,f[i][0],f[i][1]);
+        t+=f[i][0];
+    }
+	printf("\n The total profit is %d",t);
+}
+
+void main()
+{
+	int n,i,m,a[max][2];
+	printf("\nEnter the limit:");
+	scanf("%d",&m);
+	printf("\nEnter the number of items: ");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		printf("\nEnter the %d item's value: ",i+1);
+		scanf("%d",&a[i][0]);
+		printf("\nEnter the %d item's weight:",i+1);
+		scanf("%d",&a[i][1]);
+	}
+	printf("\nitem val weight");
+	for(i=0;i<n;i++)
+	{
+		printf("\n %d  %d   %d",i+1,a[i][0],a[i][1]);
+	}
+	find(a,n,m);
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////Bellman Ford
+#include<stdio.h>
+#define max 10
+typedef struct node
+{
+    int s,dist,pred;
+}N;
+typedef struct edge
+{
+    int s,d;
+}E;
+void display_mat(int a[max][max],int n)
+{
+    int i,j;
+    printf("\nThe matrix is:");
+    for(i=0;i<n;i++)
+    {
+        printf("\n");
+        for(j=0;j<n;j++)
+        {
+            if(a[i][j]==1000)
+                printf("-  ");
+            else
+                printf("%d  ",a[i][j]);
+        }
+    }
+}
+
+int create_mat(int a[max][max],int n)
+{
+    int i,j,k,r,s,d,e=0;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+            a[i][j]=1000;
+    }
+    printf("Enter the number of edges(loops,edges,parallel edges):");
+    scanf("%d",&k);
+    for(i=0;i<k;i++)    
+    {   
+        printf("Enter the source:");
+        scanf("%d",&s);
+        printf("Enter the destination :");
+        scanf("%d",&d);
+        if(s==d)
+        {
+            printf("There cannot be loops .");
+            continue;
+        }
+        printf("Enter the distance:");
+        scanf("%d",&r);
+        a[s-1][d-1]=r;
+        e++;
+    }
+    return e;
+}
+
+void belf(int c,int n,int r,int a[max][max])
+{
+    int i,j,k=0,flag;
+    N n1[max];
+    E e[max];
+    for(i=0;i<n;i++)
+    {
+        n1[i].s=i+1;
+        n1[i].pred=1000;
+        if(i+1==c)
+            n1[i].dist=0;
+        else
+            n1[i].dist=1000;
+    }
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            if(a[i][j]!=1000)
+            {
+                e[k].s=i+1;
+                e[k++].d=j+1;
+            }
+        }
+    }
+    for(i=0;i<r;i++)
+        printf("\n%d->%d",e[i].s,e[i].d);
+    for(i=0;i<n;i++)
+    {
+        printf("\nnode dist pred");
+        for(j=0;j<n;j++)
+        {
+            if(n1[j].pred!=1000 && n1[j].dist!=1000)
+            {
+                printf("\n%d %d %d",n1[j].s,n1[j].dist,n1[j].pred);
+            }
+            else if(n1[j].pred==1000 && n1[j].dist!=1000)
+            {
+                printf("\n%d %d -",n1[j].s,n1[j].dist);
+            }   
+            else if(n1[j].pred!=1000 && n1[j].dist==1000)
+            {
+                printf("\n%d - %d",n1[j].s,n1[j].pred);
+            }
+        }
+        flag=0;
+        printf("\nIteration %d",i+1);
+        for(j=0;j<r;j++)
+        {
+            if((n1[(e[j].s)-1].dist+a[e[j].s-1][e[j].d-1])<n1[(e[j].d)-1].dist)
+            {
+                flag=1;
+                n1[(e[j].d)-1].dist=n1[(e[j].s)-1].dist+a[e[j].s-1][e[j].d-1];
+                n1[(e[j].d)-1].pred=n1[(e[j].s)-1].s;
+            }
+        }
+        if(i==n-1 && flag==1)
+        {
+            printf("\nThe graph has a negetive cycle. So No solution");
+            break;
+        }
+        else
+        {
+           printf("\nFINAL RESULT:");
+           for(j=0;j<n;j++)
+            {
+                if(n1[j].pred!=1000 && n1[j].dist!=1000)
+                {
+                    printf("\n%d %d %d",n1[j].s,n1[j].dist,n1[j].pred);
+                }
+                else if(n1[j].pred==1000 && n1[j].dist!=1000)
+                {
+                    printf("\n%d %d -",n1[j].s,n1[j].dist);
+                }   
+                else if(n1[j].pred!=1000 && n1[j].dist==1000)
+                {
+                    printf("\n%d - %d",n1[j].s,n1[j].pred);
+                }
+            }            
+        }
+        
+    }
+}
+
+void main()
+{
+    int r,c,n,a[max][max];
+    printf("Enter the no. of vertices:");
+    scanf("%d",&n);
+    printf("Enter the source node:");
+    scanf("%d",&c);
+    r=create_mat(a,n);
+    display_mat(a,n);
+    belf(c,n,r,a);
+}
+////////////////////////////////////////////////////////////////////////////////Floyd warshall
+#include<stdio.h>
+#define max 10
+void display_mat(int a[max][max],int n)
+{
+    int i,j;
+    printf("\nThe matrix is:");
+    for(i=0;i<n;i++)
+    {
+        printf("\n");
+        for(j=0;j<n;j++)
+        {
+            if(a[i][j]==1000)
+                printf("-  ");
+            else
+                printf("%d  ",a[i][j]);
+        }
+    }
+}
+
+void create_mat(int a[max][max],int seq[max][max],int n)
+{
+    int i,j,k,r,s,d,e=0;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            if(i==j)
+            {
+                seq[i][j]=1000;
+                a[i][j]=0;
+            }
+            else
+            {
+                seq[i][j]=j+1;
+                a[i][j]=1000;
+            }
+        }
+    }
+    printf("Enter the number of edges(loops,edges,parallel edges):");
+    scanf("%d",&k);
+    for(i=0;i<k;i++)    
+    {   
+        printf("Enter the source:");
+        scanf("%d",&s);
+        printf("Enter the destination :");
+        scanf("%d",&d);
+        if(s==d)
+        {
+            printf("There cannot be loops .");
+            continue;
+        }
+        printf("Enter the distance:");
+        scanf("%d",&r);
+        a[d-1][s-1]=a[s-1][d-1]=r;
+    }
+}
+
+void sq(int seq[max][max],int n,int i,int j)
+{
+    int w[n],k=0,l,x=i,y=j;
+    while(i!=j)
+    {   
+        w[k++]=i+1;
+        i=seq[i][j]-1;
+    }
+    w[k]=i+1;
+    for(l=0;l<=k;l++)
+    {
+        if(l==k)
+            printf("%d",w[l]);
+        else
+            printf("%d->",w[l]);
+    }
+}
+
+void display(int a[max][max],int seq[max][max],int n)
+{   
+    int i,j,flag[max][max];
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            flag[i][j]=0;
+        }
+    }
+    printf("\nSrc   Destn   Dist   Path");
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            if(i!=j && flag[i][j]==0)
+            {
+                printf("\n  %d     %d      %d     ",i+1,j+1,a[i][j]);
+                sq(seq,n,i,j);
+                flag[i][j]=flag[j][i]=1;
+            }
+        }
+    }
+}
+
+void fw(int a[max][max],int seq[max][max],int n)
+{
+    int k,i,j;
+    for(k=0;k<n;k++)
+    {   printf("\nIteration %d",k+1);
+        for(i=0;i<n;i++)
+        {
+            if(k!=i)
+            {
+                for(j=0;j<n;j++)
+                {
+                    if(i!=j)
+                    {
+                        if(a[i][j]>a[i][k]+a[k][j])
+                        {
+                            a[j][i]=a[i][j]=a[i][k]+a[k][j];
+                            seq[i][j]=seq[j][i]=k+1;
+                        }
+                    }
+                }
+            }
+        }
+        display_mat(a,n);
+        display_mat(seq,n);
+    }
+    
+}
+
+void main()
+{
+    int n,a[max][max],seq[max][max];
+    printf("Enter the no. of vertices:");
+    scanf("%d",&n);
+    create_mat(a,seq,n);
+    display_mat(a,n);
+    display_mat(seq,n);
+    fw(a,seq,n);
+    display(a,seq,n);
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////KMP
+#include<stdio.h>
+#include<string.h>
+#include<conio.h>
+#include<ctype.h>
+#define x 20
+int f[x];
+
+void prefixtable(char s[],int m)
+{	int i=1,j=0;
+	f[0]=0;
+	while(i<m)
+	{	if(s[i]==s[j])
+		{	f[i]=j+1;
+			i++;
+			j++;
+		}
+		else if(j>0)
+			j=f[j-1];
+		else
+		{	f[i]=0;
+			i++;
+		}
+	}
+}
+
+int kmp(char t[],int n,char s[],int m)
+{	int i=0,j=0;
+	prefixtable(s,m);
+	while(i<n)
+	{	if(t[i]==s[j])
+		{	if(j==m-1)
+				return i-j;
+			else
+			{	i++;
+				j++;
+			}
+		}
+		else if(j>0)
+			j=f[j-1];
+		else
+			i++;
+	}
+	return -1;
+}
+
+void main()
+{	char sub[x],str[x];
+	int m,n;
+	printf("Enter string\n");
+	gets(str);
+	printf("Enter string\n");
+	gets(sub);
+	n=strlen(str);
+	m=strlen(sub);
+	if(kmp(str,n,sub,m)!=-1)
+		printf("Match Found\n");
+	else
+		printf("Not Found\n");
+	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////NQUEEN
+#include<stdio.h>
+#include<math.h>
+#define SIZE 10
+int col[SIZE] = {0};
+int is_safe(int q,int c)
+{	int k;
+	for(k=1;k<=q-1;k++)
+	{	if(c==col[k]||abs(q-k)==abs(c-col[k]))
+			return 0;
+	}
+	return 1;	
+}
+void nqueen(int q,int n,int *count)
+{	int c,j;
+	for(c=1;c<=n;c++)
+	{	if(is_safe(q,c)==1)
+		{	
+			col[q]=c;
+			if(q == n)
+			{	for(c = 1; c <= n; c++)
+				{	for(j=1;j<=n;j++)
+					{	if(col[c]!=j)
+							printf("-\t");
+						else
+							printf("Q\t");
+					}
+					printf("\n");
+				}
+        		printf("\n\n");
+        		*count = *count + 1;
+      		}
+      		else
+				nqueen(q+1, n, count);
+    	}	
+	}	
+}
+void main()
+{	int n,count=0;
+	printf("Enter no. of queens\n");
+	scanf("%d",&n);
+	nqueen(1,n,&count);
+	printf("There are %d solutions\n",count);
+}
+//////////////////////////////////////////////////////////////////////////////////Sum of Subsets
+#include<stdio.h>
+#define max 10
+int a[max],added[max];
+void sos(int sum,int loc,int e,int total,int n)
+{   int i;
+    if(e==sum)
+    {   printf("\nSolution is\n");
+        for(i=0;i<n;i++)
+        {   if(added[i]==1)
+                printf("%d\t",a[i]);
+        }
+    }
+    else if((e+a[loc]<=sum)&&(e+total>=sum))
+    {   added[loc]=1;
+        sos(sum,loc+1,e+a[loc],total-a[loc],n);
+        added[loc]=0;
+        sos(sum,loc+1,e,total-a[loc],n);   
+    }
+}
+void main()
+{   int i,j,temp;
+    int n,sum,total;
+    //take input
+    printf("Enter the number of elements : ");
+    scanf("%d",&n);
+    printf("Enter the sum : ");
+    scanf("%d",&sum);
+    total=0;
+    //take input with total
+    for(i=0;i<n;i++)
+    {
+        printf("Enter the %d element : ",i);
+        scanf("%d",&a[i]);
+        total=total+a[i];
+    }
+    //sort in ascending order
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n-1;j++)
+        {
+            if(a[j]<a[j+1])
+            {
+                temp=a[j];
+                a[j]=a[j+1];
+                a[j+1]=temp;
+            }
+        }
+    }//call sos
+        sos(sum,0,0,total,n);
+}
+////////////////////////////////////////////////////////////////////////////////Graph coluring
+#include<stdio.h>
+#include<stdlib.h>
+#define SIZE 10
+int adj[SIZE][SIZE] = {0};
+int X[SIZE] = {0};
+void creategraph(int n)
+{
+	int s, d, e, i, j, w;
+	for(i=1; i<=n; i++)
+	{
+	    printf("Enter number edges for %d\n", i);
+		scanf("%d", &e);
+		for(j=1; j<=e; j++)
+		{
+            printf("Enter destination\n");
+			scanf("%d", &d);
+			adj[i][d] = 1;
+		}
+	}
+}
+int isSafe(int node, int colour)
+{
+    int j;
+    for(j = 1; j <= node - 1; j++)
+    {
+        if(adj[node][j] == 1 && X[j] == colour)
+        {
+            return 0;
+        }
+    }
+  return 1;
+}
+void canColour(int node, int n, int m, int *count)
+{
+    int i,j,k;
+    for(i = 1; i <= m; i++)
+    {
+        if(isSafe(node, i))
+        {
+            X[node] = i;
+            if(node == n)
+            {
+                printf("The solution is\n");
+                for(k = 1; k <= n; k++)
+                {
+                    printf("The colour for node %d is %d\n", k, X[k]);
+                }
+            *count = *count + 1;
+            printf("\n");
+        }
+        else
+        {
+            canColour(node + 1, n, m, count);
+        }}}}
+
+
+void main()
+{
+    int n, m, count = 0;
+    printf("Enter the number of colours: ");
+    scanf("%d", &m);
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    creategraph(n);
+    canColour(1, n, m, &count);
+    printf("\nTotal solutions are %d\n", count);
+}
+/////////////////////////////////////////////////////////////////////////////////////Longest Common Sub
+#include<stdio.h>
+#include<string.h>
+#define max 100
+void main()
+{	char a[max],b[max],lcs[max],f[max][max];
+	int i,j,r,c,q;
+	printf("Enter string 1\n");
+	gets(a);
+	printf("Enter string 2\n");
+	gets(b);
+	r=strlen(a);
+	c=strlen(b);
+	for(i=0;i<r+1;i++)
+	{	for(j=0;j<c+1;j++)
+		{	f[i][j]=0;
+		}
+	}
+	for(i=1;i<r+1;i++)
+	{	for(j=1;j<c+1;j++)
+		{	if(a[i-1]==b[j-1])
+				f[i][j]=f[i-1][j-1]+1;
+			else
+			{	if(f[i-1][j]<f[i][j-1])
+					f[i][j]=f[i][j-1];
+				else if (f[i-1][j]>=f[i][j-1])
+					f[i][j]=f[i-1][j];
+
+			}	
+		}
+	}
+	printf("The matrix is\n");
+	printf("    ");
+	for(q=0;q<c;q++)
+		printf("%c ",b[q]);
+	for(q=0;q<r+1;q++)
+	{	printf("\n");
+		if(q>0)
+			printf("%c ",a[q-1]);
+		else
+			printf("  ");
+		for(i=0;i<c+1;i++)
+			printf("%d ",f[q][i]);
+	}
+	i=r;j=c;q=0;
+	while(i!=0)
+	{	if(f[i-1][j]>f[i][j-1])
+		{	if(f[i-1][j]!=f[i][j])
+			{	lcs[q++]=a[i-1];
+				i--;j--;
+			}
+			else
+				i--;	
+		}
+		else if(f[i-1][j]<=f[i][j-1])
+		{	if(f[i][j-1]!=f[i][j])
+			{	lcs[q++]=a[i-1];
+				i--;j--;
+			}
+			else
+				j--;
+		}
+	}
+	printf("The lcs is %s\n",strrev(lcs));
+}
+//////////////////////////////////////////////////////////////////////////////////////ASsembly Line Scheduling
+#include<stdio.h>
+#define max 10
+typedef struct a
+{
+    int start[max],end[max],c[max][max],ec[max][max][max];
+    int asln[max][max],prev[max][max];
+    int final,p;
+}r;
+r ob;
+
+void input(int s,int l) 
+{
+    int i,j,k;
+    for(i=0;i<l;i++)
+    {
+        printf("Enter the entry cost for line %d : ",i+1);
+        scanf("%d",&ob.start[i]);
+        printf("Enter the exit cost for line %d : ",i+1);
+        scanf("%d",&ob.end[i]);
+        for(j=0;j<s;j++)
+        {   
+            printf("Enter the cost of stage %d of line %d   : ",j+1,i+1);
+            scanf("%d",&ob.c[i][j]);
+            if(j==s-1)
+                break;
+            for(k=0;k<l;k++)
+            {
+                
+                if(i==k)
+                    ob.ec[i][j][k]=0;
+                else
+                {
+                    printf("Enter the travel cost of stage %d of line %d to next stage of assembly line %d  : ",j+1,i+1,k+1);
+                    scanf("%d",&ob.ec[i][j][k]);
+                }
+            }
+        }
+    }
+    
+}
+
+void print(int s,int l,int y,int x)                 //y-> stage no. ,x-> line no.
+{
+    if(y==0)
+    {
+        printf("start-%d->(%d)",ob.asln[x][y],ob.c[x][y]);
+    }
+    else if(y==s)
+    {
+        print(s,l,y-1,(ob.p)-1);
+        printf("-%d->end(%d,%d)",ob.end[x],ob.p,ob.final);
+    }
+    else
+    {
+        print(s,l,y-1,(ob.prev[x][y])-1);
+        printf("-%d->(%d,%d)",ob.ec[ob.prev[x][y]-1][y-1][x],ob.prev[x][y],ob.c[x][y]);
+    }
+}
+void als(int s,int l)
+{
+    int i,j,k,minc,minn,prev;
+    for(i=0;i<=s;i++)
+    {
+        for(j=0;j<l;j++)
+        {
+            if(i==0)
+                ob.asln[j][i]=ob.start[j];
+            else if(i==s)
+                ob.asln[j][i]=ob.asln[j][i-1]+ob.c[j][i-1]+ob.end[j];
+            else
+            {   
+                minc=ob.asln[0][i-1]+ob.c[0][i-1]+ob.ec[0][i-1][j] ;
+                prev=1;
+                for(k=1;k<l;k++)
+                {   
+                    minn=ob.asln[k][i-1]+ob.c[k][i-1]+ob.ec[k][i-1][j];
+                    if(minc>minn)
+                    {
+                        minc=minn;
+                        prev=k+1;
+                    }
+                }
+                ob.asln[j][i]=minc;
+                ob.prev[j][i]=prev;
+            }
+            
+        }
+    }
+    minc=ob.asln[0][s];
+    prev=1;
+    for(j=1;j<l;j++)
+    {
+        if(minc>ob.asln[j][s])
+        {
+            minc=ob.asln[j][s];
+            prev=j+1;
+        }
+    }
+    ob.final=minc;
+    ob.p=prev;
+    for(i=0;i<l;i++)
+    {
+        printf("\n");
+        for(j=0;j<=s;j++)
+        {
+            printf("%d ",ob.asln[i][j]);
+        }
+    }
+    for(i=0;i<l;i++)
+    {
+        printf("\n");
+        for(j=0;j<s;j++)
+        {
+            if(j==0)
+                printf("  ");
+            else
+                printf("%d ",ob.prev[i][j]);
+        }
+    }
+    printf("\n");
+    print(s,l,s,ob.p-1);
+}
+
+void main()
+{
+    int i,s,l;
+    printf("Enter the number of assembly lines : ");
+    scanf("%d",&l);
+    printf("Enter the number of stages : ");
+    scanf("%d",&s);
+    input(s,l);
+    als(s,l);
+
+}
+//////////////////////////////////////////////////END

@@ -1,0 +1,603 @@
+Program 19 : Priority Queue Using Linked List
+
+class Node:
+    def __init__(self):
+        self.data = 0
+        self.pri = 10
+        self.next = None
+    def enque(self, start):
+        self.data = int(input("Enter value to be enqueued: "))
+        self.pri = int(input("Set priority (Low Value -> High Priority): "))
+        ptr = start
+        preptr = ptr
+        if(start == None):
+            start = self
+        elif(start.pri > self.pri):
+            self.next = start
+            start = self
+        else:
+            while(ptr.next != None and ptr.next.pri <= self.pri):
+                preptr = ptr
+                ptr = ptr.next
+
+            self.next = ptr.next
+            ptr.next = self
+
+        return start
+
+    def deque(self, start):
+        if(start == None):
+            print("List empty")
+        else:
+            print(f"Dequeued data: {start.data}")
+            start = start.next
+        return start
+
+    def disp(self, start):
+        ptr = start
+        print("Elements in the queue are")
+        if(start == None):
+            print("List empty")
+        else:
+            while(ptr != None):
+                print(f"{ptr.data}", end = ' ')
+                ptr = ptr.next
+            print(" ")
+
+a = Node()
+b = Node()
+c = Node()
+d = Node()
+e = Node()
+f = Node()
+start = None
+start = a.enque(start)
+start = b.enque(start)
+start = c.enque(start)
+start = d.enque(start)
+start = e.enque(start)
+start = f.enque(start)
+start.disp(start)
+start = start.deque(start)
+start = start.deque(start)
+start = start.deque(start)
+start.disp(start)
+
+
+///////////stack
+class Node:
+    def __init__(self):
+        self.data = 0
+        self.next = None
+
+    def push(self, x):
+        self.data = int(input("Enter value to be pushed: "))
+        self.next = x
+        x = self
+        return x
+
+    def pop(self, x):
+        if(x == None):
+            print("List empty")
+        else:
+            print(f"Popped data: {x.data}")
+            x = x.next
+        return x
+
+    def display(self, x):
+        i = x
+        print("Elements in the stack are")
+        if(x == None):
+            print("List empty")
+        else:
+            while(i != None):
+                print(f"{i.data}", end = ' ')
+                i = i.next
+            print(" ")
+
+a = Node()
+b = Node()
+c = Node()
+d = Node()
+x = None
+x = a.push(x)
+x = b.push(x)
+x = c.push(x)
+x = d.push(x)
+x.display(x)
+x = x.pop(x)
+x = x.pop(x)
+x = x.pop(x)
+x.display(x)
+
+
+/////////////////////////////
+Program 1 : Quadratic Equation
+
+import math
+a,b,c=input('ENTER COEFFICIENTS OF THE QUADRATIC EQUATION:').split()
+a=int(a)
+b=int(b)
+c=int(c)
+
+r=(b**2)-(4*a*c)
+if r>0:
+    x=(-b+math.pow(r,0.5))/(2*a)
+    y=(-b-math.pow(r,0.5))/(2*a)
+    print('SOLUTION OF QUADRATIC EQUATION ',x,' and ',y)
+elif r==0:
+    x=(-b)/(2*a)
+    print('The solution to the quadratic equation ',x)
+else:
+    print('imaginary solutions')
+
+
+'''
+OUTPUT:
+ENTER COEFFICIANTS OF THE QUADRATIC EQUATION::1 -4 4
+SOLUTION OF QUADRATIC EQUATION  2.0
+ENTER COEFFICIANTS OF THE QUADRATIC EQUATION:1 -3 2
+SOLUTION OF QUADRATIC EQUATION  2.0  and  1.0
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Program 2 : Prime Interval
+
+
+lower = int(input("Enter lower range: "))
+upper = int(input("Enter upper range: "))
+
+print("Prime numbers between",lower,"and",upper,"are:")
+
+for num in range(lower,upper + 1):
+   if num > 1:
+       for i in range(2,num):
+           if (num % i) == 0:
+               break
+       else:
+           print(num)
+
+'''
+OUTPUT:
+Enter lower range: 2
+Enter upper range: 7
+Prime numbers between 2 and 7 are:
+2
+3
+5
+7
+'''
+
+ Program 3 : Armstrong
+
+n=int(input('ENTER THE NUMBER TO BE CHECKED: '))
+
+def armstrong(n):
+    sum=0
+    num=n
+    while num!=0:
+        r=num%10
+        num//=10
+        sum=sum + (r*r*r)
+    if n==sum:
+        print('😂NUMBER IS AN ARMSTRONG NUMBER')
+    else:
+        print("NUMBER IS NOT AN RMSTRONG NUMBER")        
+
+armstrong(n)
+
+''' OUTPUT:
+ENTER THE NUMBER TO BE CHECKED =2
+THE NUMBER IS NOT AN RMSTRONG NUMBER
+'''
+
+
+ Program 4 : Vowels Consonents
+
+vowels = 0
+consonants= 0
+word = input("ENTER THE STRING: ")
+for i in word :
+    if i.isalpha() :
+        if i=='a' or i=='e' or i=='i' or i=='o' or i=='u' or i=='A' or i=='E' or i=='I' or i=='O' or i=='U' :
+            vowels = vowels + 1
+        else:
+            consonants = consonants + 1
+print("VOWELS = " , vowels)
+print("CONSONENTS = ", consonants)
+
+
+
+
+
+
+ Program 5 : Searching using List
+
+def search (list, m):
+    for i in range (0, len(list)):
+        if m == list[i]:
+            print("ELEMENT FOUND AT LOCATION ", i+1)
+            return
+    print('ELEMENT NOT FOUND')
+
+n = int(input('ENTER THE NUMBER OF ELEMENTS IN THE LIST : '))
+list=[]
+for i in range (0,n):
+    list.append(int(input('ENTER THE ELEMENT : ')))
+
+m=int(input('ENTER THE ELEMENT TO FIND -'))
+search(list,m)
+
+''' OUTPUT:
+ENTER THE NUMBER OF ELEMENTS IN THE LIST : 4
+ENTER THE ELEMENT : 66
+ENTER THE ELEMENT : 2
+ENTER THE ELEMENT : 43
+ENTER THE ELEMENT : 78
+ENTER THE ELEMENT TO FIND -2
+ELEMENT FOUND AT LOCATION  2   '''
+
+
+
+
+
+
+
+Program 6 : Sorting using List
+
+def bubble_sort(n):
+    for i in range(0, len(n)):
+        for j in range(i, len(n)):
+            if n[i] > n[j]:
+                temp = n[i]
+                n[i] = n[j]
+                n[j] = temp
+
+def display_list(n):
+    for i in n:
+        print(i,end=' ')
+    print()
+
+num=int(input('ENTER NO OF ELEMENTS:'))
+n=[]
+for i in range(0,num):
+    n.append(int(input(' ENTER THE ELEMENTS')))
+
+print('BEFORE SORTING : ')
+display_list(n)
+bubble_sort(n)
+print('AFTER SORTING: ')
+display_list(n)
+
+'''
+OUTPUT:
+ENTER NUMBER OF ELEMENTS :5
+ENTER THE ELEMENTS :
+5
+7
+6
+4
+3
+
+BEFORE SORTING :
+5 7 6 4 3
+AFTER SORTING :
+3 4 5 6 7
+'''
+
+
+
+
+
+
+
+
+
+
+-
+Program 8 : Fibonacci
+
+def fibo(n):
+    if n <= 1:
+        return n
+    else:
+       return(fibo(n-1) + fibo(n-2))
+
+terms = int(input("ENTER THE NUMBER OF TERMS: "))
+print("Fibonacci sequence:")
+for i in range(terms):
+    print(fibo(i))
+
+''' OUTPUT:
+ENTER THE NUMBER OF TERMS: 4
+Fibonacci sequence:
+0
+1
+1
+2
+'''
+
+-------------------------------------------x----------------------------------------------------x---------------------
+
+Program 11 : Reverse the Word of input file
+
+def reverse(input):
+    inpw = input.split(" ")
+    inpw = inpw[::-1]
+    print(inpw)
+    output =' '.join(inpw)
+    return output
+
+
+f= open("testfile.txt","r")
+input = str(f.read())
+print(reverse(input))
+f.close()
+
+--------------------------------------------------x---------------------------------x----------------
+
+Program 12 : Simple Word Count
+
+mystr = str(input("The original string is : " ))   
+res = len(mystr.split())
+print ("The number of words in string are : " +  str(res))
+///////////////////////////////////////////////////alternative
+text=input("Enter a string\n")
+spaces=0
+for i in text:
+    if i==" ":
+        spaces+=1
+print("there are",spaces+1,"words in the text")
+-----------------------------------------------------------------------------------------------------
+13 :
+CSV Program 1 : Display Words Start Letter A
+
+
+import csv
+data=csv.reader("C:/Users/abc/Desktop/people.csv")
+
+def wordread(data):
+    for i in range(len(data.Name)):
+        if data.Name[i][0] == "a" or data.Name[i][0] == "A":
+            print(data.Name[i])
+
+wordread(data)
+
+--------------------------------------------------x---------------------------------x----------------
+
+15 :
+CSV Program 2 : Extract Colum 2 & Display
+
+import csv
+csvfile=open("test.csv","r")
+csvreader=csv.reader(csvfile)
+for row in csvreader:
+    print(row[1])
+csvfile.close()
+
+--------------------------------------------------x---------------------------------x----------------
+
+14 :
+Add Given Lines to File
+
+with open("line.txt","w+") as file:
+    file.write("Monday is a Day\n\n          May is a Month    \n    2018 is a Year ")
+
+with open("line.txt","r") as file:
+    n=int(input("Enter the number of lines to be printed: "))
+    head= [next(file) for x in range(n)]
+
+for i in range(len(head)):
+    print(head[i])
+//////////////////////////////////
+Program 9: Bank
+
+accclist=[]
+class Account:
+    balance=500.0
+    rate=0.07
+    count=1000
+    def createAccount(self):
+        self.name=str(input("enter your name"))
+        self.address=str(input("enter ther address"))
+        self.contact=int(input("enter your contact number"))
+        Account.count=Account.count+1
+        self.accno=Account.count
+        
+    def computeInterest(self):
+        return self.balance*self.rate
+    
+    def deposit(self):
+        add=int(input("enter the amount to be deposited:"))
+        self.balance=self.balance+Account.computeInterest(self)+add
+        print(f"Account blanace:{self.balance}")
+    
+    def withdraw(self):
+        sub=int(input("enter the amount to be deposited"))
+        if self.balance-sub <0:
+            print("amount cannot be withdrawn")
+        else:
+            self.balance=self.balance-sub
+            print(f"Account blanace:{self.balance}")
+    def __str__(self):
+        return(f"-----Account Details-----\nAccount number: {self.accno}\nAccount name: {self.name}\nBalance: {self.balance}")
+        
+def menu(Acc):
+    while(True):
+        print(f"-------welcome {Acc.name}-----")
+        print("1.deposit")
+        print("2.withdraw")
+        print("3.show details")
+        print("4.return")
+        choice=int(input("Enter:"))
+        
+        if choice==1:
+            Acc.deposit()
+        elif choice==2:
+            Acc.withdraw()
+        elif choice==3:
+            print(Acc)
+        elif choice==4:
+            break
+        else:
+            print("wrong choice")
+while True:
+    print("1.create new Account")
+    print("2.show all account" )
+    print("3.Exit")
+    ch=int(input("enter the choice"))
+    if(ch==1):
+        new=Account()
+        new.createAccount()
+        menu(new)
+        acclist.append(new)
+    elif ch==2:
+        print("list of accounts")
+        if(acclist):
+            for accounts in acclist:
+                print(accounts.accno)
+                acc=None
+            accno=int(input("enter the account no to be accessed"))
+            for accounts in acclist:
+                if(accno==accounts.accno):
+                    acc=accounts
+                if(acc==None):
+                    print("Account not found")
+                else:
+                    menu(acc)
+        else:
+            print("no accounts added")
+    elif ch==3:
+        print("thsnkyou for visiting")
+    else:
+        print("wrong choice")
+
+--------------------------------------------------x---------------------------------x----------------
+
+16. socket file transfer
+
+# server.py
+
+import socket                   # Import socket module
+
+port = 60000                    # Reserve a port for your service.
+s = socket.socket()             # Create a socket object
+host = socket.gethostname()     # Get local machine name
+s.bind((host, port))            # Bind to the port
+s.listen(5)                     # Now wait for client connection.
+
+print 'Server listening....'
+
+while True:
+    conn, addr = s.accept()     # Establish connection with client.
+    print 'Got connection from', addr
+    data = conn.recv(1024)
+    print('Server received', repr(data))
+
+    filename='mytext.txt'
+    f = open(filename,'rb')
+    l = f.read(1024)
+    while (l):
+       conn.send(l)
+       print('Sent ',repr(l))
+       l = f.read(1024)
+    f.close()
+
+    print('Done sending')
+    conn.send('Thank you for connecting')
+    conn.close()
+
+
+# client.py
+
+import socket                   # Import socket module
+
+s = socket.socket()             # Create a socket object
+host = socket.gethostname()     # Get local machine name
+port = 60000                    # Reserve a port for your service.
+
+s.connect((host, port))
+s.send("Hello server!")
+
+with open('received_file', 'wb') as f:
+    print 'file opened'
+    while True:
+        print('receiving data...')
+        data = s.recv(1024)
+        print('data=%s', (data))
+        if not data:
+            break
+        # write data to a file
+        f.write(data)
+
+f.close()
+print('Successfully get the file')
+s.close()
+print('connection closed'
+
+
+----------------------------------------------------------------------------------------------------
+20.GUI
+
+from tkinter import *
+
+window = Tk()
+window.title("Welcome to TutorialsPoint")
+window.geometry('400x400')
+window.configure(background = "light green")
+
+name = Label(window ,text = "Name")
+name.grid(row = 0,column = 0)
+roll = Label(window ,text = "Roll Number")
+roll.grid(row = 1,column = 0)
+phone = Label(window ,text = "Cell No")
+phone.grid(row = 2,column = 0)
+email = Label(window ,text = "Email ID")
+email.grid(row = 3,column = 0)
+
+name_f = Entry(window)
+name_f.grid(row = 0,column = 2)
+roll_f = Entry(window)
+roll_f.grid(row = 1,column = 2)
+phone_f = Entry(window)
+phone_f.grid(row = 2,column = 2)
+email_f = Entry(window)
+email_f.grid(row = 3,column = 2)
+
+
+
+
+def printd():
+   print("The name of student is  ",name_f.get())
+   print("The roll no of student is  ",roll_f.get())
+   print("The phone no of student is  ",phone_f.get())
+   print("The email of student is  ",email_f.get())
+
+
+btn1 = Button(window ,text="Submit",command = printd)
+btn1.grid(row=4,column=0)
+
+
+window.mainloop()
+
+

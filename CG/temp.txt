@@ -1,0 +1,921 @@
+**************************************************DDA*******************************************************
+#include<stdio.h>
+#include<stdlib.h>
+#include<GL/glut.h>
+#include<math.h>
+void dda()
+{	glBegin(GL_POINTS);
+	float x1, y1, x2, y2, dx, dy, steps, xi, yi, x, y;
+	printf("Enter co-ordinates of first point\n");
+	scanf_s("%f%f", &x1, &y1);
+	printf("Enter co-ordinates of second point\n");
+	scanf_s("%f%f", &x2, &y2);
+	dx = x2 - x1;
+	dy = y2 - y1;
+	if (abs(dx) > abs(dy))
+		steps = abs(dx);
+	else
+		steps = abs(dy);
+	xi = dx / steps;
+	yi = dy / steps;
+	x = x1;
+	y = y1;
+	glVertex2f(x, y);
+	for (float i = 1; i < steps; i++) 
+	{	x = x + xi;
+		y = y + yi;
+		glVertex2f(x, y);
+	}
+	glEnd();
+
+}
+void disp()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	dda();
+	glFlush();
+}
+
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(800, 800);
+	glutCreateWindow("window");
+	gluOrtho2D(0, 300, 0, 300);
+	glutDisplayFunc(disp);
+	glutMainLoop();
+	return 0;
+}
+
+***************************************************MOd Bres**************************************
+#include<stdio.h>
+#include<stdlib.h>
+#include<GL/glut.h>
+#include<math.h>
+void bres() {
+	glBegin(GL_POINTS);
+	float x1, x2, y1, y2, p, dx, dy;
+	printf("Enter start points\n");
+	scanf_s("%f%f", &x1, &y1);
+	printf("Enter end points\n");
+	scanf_s("%f%f", &x2, &y2);
+	dx = x2 - x1;
+	dy = y2 - y1;
+
+	glVertex2f(x1, y1);
+
+	if (abs(dy) < abs(dx)) 
+		//printf("slope is less than 1");
+	{
+
+		p = 2 * dy - dx;
+		for (; x1 <= x2;) {
+			if (p < 0) {
+				x1 = x1 + 1;
+				p = p + 2 * dy;
+			}
+			else {
+				x1 = x1 + 1;
+				y1 = y1 + 1;
+				p = p + 2 * dy - 2 * dx;
+			}
+			glVertex2f(x1, y1);
+		}
+	}
+	else
+		//printf("slope is greater than equal to 1");
+		 {
+		p = 2 * dx - dy;
+		for (; x1 <= x2;) {
+			if (p < 0) {
+				y1 = y1 + 1;
+				p = p + 2 * dx;
+			}
+			else {
+				x1 = x1 + 1;
+				y1 = y1 + 1;
+				p = p + 2 * dx - 2 * dy;
+			}
+			glVertex2f(x1, y1);
+		}
+	}
+
+
+	glEnd();
+}
+void disp()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	bres(); //Call function
+	glFlush();
+}
+
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("window");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(disp);
+	glutMainLoop();
+	return 0;
+}
+*****************************************************Circle*********************************************
+#include<stdio.h>
+#include<stdlib.h>
+#include<GL/glut.h>
+#include<math.h>
+void circle(int x1,int y1,int r)
+{
+	//int x1 = 100;
+	//int y1 = 70;
+	//int r = 50;
+
+	int x = 0;
+	int y = r;
+	int p = 1 - r;
+
+	while (x < y) {
+		x++;
+		if (p < 0)
+			p += 2 * x + 1;
+		else {
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+		glBegin(GL_POINTS);
+		glVertex2f(x1 + x, y1 + y);
+		glVertex2f(x1 - x, y1 + y);
+		glVertex2f(x1 + x, y1 - y);
+		glVertex2f(x1 - x, y1 - y);
+		glVertex2f(x1 + y, y1 + x);
+		glVertex2f(x1 - y, y1 + x);
+		glVertex2f(x1 + y, y1 - x);
+		glVertex2f(x1 - y, y1 - x);
+		glEnd();
+	}
+	// OPTIONAL:-> 1 of the circle
+	glBegin(GL_POINTS);
+	glVertex2f(x1, y1);
+	glEnd();
+}
+void disp()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	circle(50, 50, 50);
+	circle(150, 50, 50);
+	circle(100,137,50);//Call function
+	glFlush();
+}
+
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("window");
+	gluOrtho2D(-300, 300,-300, 300);
+	glutDisplayFunc(disp);
+	glutMainLoop();
+	return 0;
+}
+********************************************************Emoji,Semicircle****************************************
+#include<stdio.h>
+#include<stdlib.h>
+#include<GL/glut.h>
+#include<math.h>
+void circle(int x1, int y1, int r)
+{
+	int x = 0;
+	int y = r;
+	int p = 1 - r;//5/4 is rounded to 1 for integer r
+
+	while (x < y)
+	{ // iterates to draw the first sector
+		x++;
+		if (p < 0)// the mid point is inside the circle
+			p += 2 * x + 1;
+		else
+		{// the mid point is outside or at the circle
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+		glBegin(GL_POINTS);
+		glVertex2f(x1 + x, y1 + y);
+		glVertex2f(x1 - x, y1 + y);
+		glVertex2f(x1 + x, y1 - y);
+		glVertex2f(x1 - x, y1 - y);
+		glVertex2f(x1 + y, y1 + x);
+		glVertex2f(x1 - y, y1 + x);
+		glVertex2f(x1 + y, y1 - x);
+		glVertex2f(x1 - y, y1 - x);
+		glEnd();
+	}
+	// OPTIONAL:-> 1 of the circle
+	glBegin(GL_POINTS);
+	glEnd();
+}
+void circle1(int x1, int y1, int r)
+{
+	int x = 0;
+	int y = r;
+	int p = 1 - r;//5/4 is rounded to 1 for integer r
+
+	while (x < y)
+	{ // iterates to draw the first sector
+		x++;
+		if (p < 0)// the mid point is inside the circle
+			p += 2 * x + 1;
+		else
+		{// the mid point is outside or at the circle
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+		glBegin(GL_POINTS);
+		//glVertex2f(x1 + x, y1 + y);
+		//glVertex2f(x1 - x, y1 + y);
+		glVertex2f(x1 + x, y1 - y);
+		glVertex2f(x1 - x, y1 - y);
+		//glVertex2f(x1 + y, y1 + x);
+		//glVertex2f(x1 - y, y1 + x);
+		glVertex2f(x1 + y, y1 - x);
+		glVertex2f(x1 - y, y1 - x);
+		glEnd();
+	}
+	// OPTIONAL:-> 1 of the circle
+	glBegin(GL_POINTS);
+	glEnd();
+}
+
+void disp()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	//circle(10, 50, 50);
+	//circle(210,50,50);
+	//circle1(110, 50, 50);
+	circle(50, 50, 100);
+	circle(20, 75, 10);
+	circle(80, 75, 10);
+	circle(50,25,20);//Call function
+	glFlush();
+}
+
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("window");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(disp);
+	glutMainLoop();
+	return 0;
+}
+********************************************************Translate***********************************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+#define max 10
+int i,j;
+void translate(float a[max][max],int n)
+{
+	float T[max];
+	printf("\n Enter the tx and ty: ");
+	scanf_s("%f%f", &T[0], &T[1]);
+	for (i = 0; i <n; i++)
+	{
+		a[i][0] = a[i][0] + T[0];
+		a[i][1] = a[i][1] + T[1];
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i <n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+	
+}
+
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	float a[max][max];
+	int n;
+	printf("Enter number of vertices\n");
+	scanf_s("%d", &n);
+	printf("\n Enter coordinates of vertices: ");
+	for (i = 0; i <n; i++)
+	{	printf("\n Enter coordinates:");
+		scanf_s("%f %f", &a[i][0], &a[i][1]);
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i <n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+	translate(a,n);
+	glFlush();
+}
+
+int main(int argv, char** argc)
+{	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("Translation");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+**********************************************SCALE*********************************************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+#define max 10
+int i, j;
+void scale(float a[max][max], int n)
+{
+	float s[max];
+	printf("\n Enter the sx and sy: ");
+	scanf_s("%f%f", &s[0], &s[1]);
+	for (i = 0; i < n; i++)
+	{
+		a[i][0] = a[i][0] * s[0];
+		a[i][1] = a[i][1] * s[1];
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+
+}
+
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	float a[max][max];
+	int n;
+	printf("Enter number of vertices\n");
+	scanf_s("%d", &n);
+	printf("\n Enter coordinates of vertices: ");
+	for (i = 0; i < n; i++)
+	{
+		printf("\n Enter coordinates:");
+		scanf_s("%f %f", &a[i][0], &a[i][1]);
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+	scale(a, n);
+	glFlush();
+}
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("Scaling");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+*****************************************************Rotate***************************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+#define max 10
+#define PI 3.14159
+int i, j;
+void rotate(double a[max][max], int n)
+{
+	double b[max][max];
+	double deg, rad;
+	printf("Enter angle of rotation in degrees :  ");
+	scanf_s("%lf", &deg);
+	rad = deg * (PI / 180);
+		for (i = 0; i < n; i++)
+		{
+			b[i][0] = a[i][0] * cos(rad) -a[i][1] * sin(rad);
+			b[i][1] = a[i][0] * sin(rad) + a[i][1] * cos(rad);
+		}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(b[i][0], b[i][1]);
+	}
+	glEnd();
+
+}
+
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	double a[max][max];
+	int n;
+	printf("Enter number of vertices\n");
+	scanf_s("%d", &n);
+	printf("\n Enter coordinates of vertices: ");
+	for (i = 0; i < n; i++)
+	{
+		printf("\n Enter coordinates:");
+		scanf_s("%lf %lf", &a[i][0], &a[i][1]);
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+	rotate(a, n);
+	glFlush();
+}
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("Rotation");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+****************************************************SCale FIXEDPT*******************************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+#define max 10
+int i, j;
+void scale(float a[max][max], int n)
+{
+	float s[max];
+	printf("\n Enter the sx and sy: ");
+	scanf_s("%f%f", &s[0], &s[1]);
+	for (i = 0; i < n; i++)
+	{
+		a[i][0] = a[i][0] * s[0];
+		a[i][1] = a[i][1] * s[1];
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+
+}
+void translate(float a[max][max], int n)
+{
+	float T[max];
+	printf("\n Enter the tx and ty: ");
+	scanf_s("%f%f", &T[0], &T[1]);
+	for (i = 0; i < n; i++)
+	{
+		a[i][0] = a[i][0] + T[0];
+		a[i][1] = a[i][1] + T[1];
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+
+}
+
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	float a[max][max];
+	int n;
+	printf("Enter number of vertices\n");
+	scanf_s("%d", &n);
+	printf("\n Enter coordinates of vertices: ");
+	for (i = 0; i < n; i++)
+	{
+		printf("\n Enter coordinates:");
+		scanf_s("%f %f", &a[i][0], &a[i][1]);
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+	translate(a, n);
+	scale(a, n);
+	translate(a, n);
+	glFlush();
+}
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("Scaling");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+********************************************Rotate FIXED PT***********************************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+#define max 10
+#define PI 3.14159
+int i, j;
+//double b[max][max];
+void rotate(double b[max][max], double a[max][max], int n)
+{
+	//double b[max][max];
+	double deg, rad;
+	printf("Enter angle of rotation in degrees :  ");
+	scanf_s("%lf", &deg);
+	rad = deg * (PI / 180);
+	for (i = 0; i < n; i++)
+	{
+		b[i][0] = a[i][0] * cos(rad) - a[i][1] * sin(rad);
+		b[i][1] = a[i][0] * sin(rad) + a[i][1] * cos(rad);
+	}
+	for (i = 0; i < n; i++)
+	{
+		a[i][0] = b[i][0];
+		a[i][1] = b[i][1];
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(b[i][0], b[i][1]);
+	}
+	glEnd();
+
+}
+void translate(double b[max][max], double a[max][max], int n)
+{
+	double T[max];
+	//double b[max][max];
+	printf("\n Enter the tx and ty: ");
+	scanf_s("%lf%lf", &T[0], &T[1]);
+	for (i = 0; i < n; i++)
+	{
+		b[i][0] = a[i][0] + T[0];
+		b[i][1] = a[i][1] + T[1];
+	}
+	for (i = 0; i < n; i++)
+	{
+		a[i][0] = b[i][0];
+		a[i][1] = b[i][1];
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(b[i][0], b[i][1]);
+	}
+	glEnd();
+
+}
+
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	double a[max][max];
+	double b[max][max] = { 0.0 };
+	int n;
+	printf("Enter number of vertices\n");
+	scanf_s("%d", &n);
+	printf("\n Enter coordinates of vertices: ");
+	for (i = 0; i < n; i++)
+	{
+		printf("\n Enter coordinates:");
+		scanf_s("%lf %lf", &a[i][0], &a[i][1]);
+	}
+	glBegin(GL_LINE_LOOP);
+	for (i = 0; i < n; i++)
+	{
+		glVertex2f(a[i][0], a[i][1]);
+	}
+	glEnd();
+	translate(b, a, n);
+	rotate(b, a, n);
+	translate(b, a, n);
+	glFlush();
+}
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("Rotation");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+******************************************************Translate CIRCLE***************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+//float P[2] = { 50,50 };
+float r = 50;
+
+void midpointCircle(float P[2])
+{
+	glBegin(GL_POINTS);
+	float x1, y1;
+	x1 = P[0];
+	y1 = P[1];
+	float x, y, p;
+	x = 0;
+	y = r;
+	p = 1 - r;
+	while (x < y)
+	{ // iterates to draw the first sector
+		x++;
+		if (p < 0)// the mid point is inside the circle
+			p += 2 * x + 1;
+		else
+		{// the mid point is outside or at the circle
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+		glBegin(GL_POINTS);
+		glVertex2f(x1 + x, y1 + y);
+		glVertex2f(x1 - x, y1 + y);
+		glVertex2f(x1 + x, y1 - y);
+		glVertex2f(x1 - x, y1 - y);
+		glVertex2f(x1 + y, y1 + x);
+		glVertex2f(x1 - y, y1 + x);
+		glVertex2f(x1 + y, y1 - x);
+		glVertex2f(x1 - y, y1 - x);
+		glEnd();
+	}
+}
+void translateCircle()
+{
+	int T[2] = { 50,10};
+	float P[2] = { 50,50 };
+	midpointCircle(P);
+
+	P[0] = T[0];
+	P[1] = T[1];
+
+	midpointCircle(P);
+}
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	translateCircle();
+	glFlush();
+}
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("window");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+*************************************************************trans Ellipse*****************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+float P[2] = { 100,100 };
+float R[2] = { 50,25 };
+
+void midpointEllipse()
+{
+	glBegin(GL_POINTS);
+	float rx, ry, xc, yc, p1, p2, x, y;
+	rx = R[0];
+	ry = R[1];
+	xc = P[0];
+	yc = P[1];
+	x = 0;
+	y = ry;
+	p1 = ry * ry - rx * rx * ry + 0.25 * rx * rx;
+	while (2 * ry * ry * x < 2 * rx * rx * y)
+	{
+		glVertex2f(xc + x, yc + y);
+		glVertex2f(xc + x, yc - y);
+		glVertex2f(xc - x, yc - y);
+		glVertex2f(xc - x, yc + y);
+		if (p1 < 0)
+		{
+			x = x + 1;
+			p1 = p1 + ry * ry + 2 * ry * ry * x;
+		}
+		else {
+			x = x + 1;
+			y = y - 1;
+			p1 = p1 + 2 * ry * ry * x - 2 * rx * rx * y + ry * ry;
+		}
+	}
+	p2 = ((x + 0.5) * (x + 0.5) * ry * ry) + ((y - 1) * (y - 1) * rx * rx) - (rx * ry * rx * ry);
+	while (y > 0)
+	{
+		glVertex2f(xc + x, yc + y);
+		glVertex2f(xc + x, yc - y);
+		glVertex2f(xc - x, yc - y);
+		glVertex2f(xc - x, yc + y);
+		if (p2 > 0)
+		{
+			y = y - 1;
+			p2 = p2 + rx * rx - 2 * rx * rx * y;
+		}
+		else
+		{
+			x = x + 1;
+			y = y - 1;
+			p2 = p2 + 2 * ry * ry * x - 2 * rx * rx * y + rx * rx;
+		}
+	}
+
+	glEnd();
+}
+void translateEllipse()
+{
+	int T[2] = { -100,-100 };
+
+	midpointEllipse();
+
+	P[0] = P[0] + T[0];
+	P[1] = P[1] + T[1];
+
+	midpointEllipse();
+}
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	translateEllipse();
+	glFlush();
+}
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("window");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+********************************************************Fractals****************************
+#define PI 3.141592
+#include<stdio.h> 
+#include<math.h>
+#include<GL/glut.h>
+void branch(float x, float y, float len, float theta)
+{
+	float x2 = x + len * cos(theta) * 10.0;
+	float y2 = y + len * sin(theta) * 10.0;
+
+
+	glBegin(GL_LINES);
+	glColor3f(0, 0, 0);
+	glVertex2f(x, y);
+	glVertex2f(x2, y2);
+	glEnd();
+
+	if (len > 0)
+	{
+		branch(x2, y2, len - 1, theta + PI / 8);
+		branch(x2, y2, len - 1, theta - PI / 8);
+	}
+}
+
+
+void disp()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(1, 1, 1);
+	branch(200, -250, 10, PI / 2); // THE MAIN BARK OF TREE
+	glFlush();
+}
+
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(600, 600);
+	glutCreateWindow("Fractal Tree");
+	gluOrtho2D(-300, 900, -300, 900);
+	glutDisplayFunc(disp);
+	glutMainLoop();
+
+}
+**********************************************************************ROTATE CIRCLE***************************
+#include<stdio.h> 
+#include<math.h> 
+#include<GL/glut.h>
+#define SIN(x) sin(x * 3.141592653589/180) 
+#define COS(x) cos(x * 3.141592653589/180) 
+int r = 20;
+int P[2] = { 100,100 };
+int X[2] = { 50,50 };
+void midpointCircle()
+{
+	glBegin(GL_POINTS);
+	float x1, y1;
+	x1 = P[0];
+	y1 = P[1];
+	float x, y, p;
+	x = 0;
+	y = r;
+	p = 1 - r;
+	while (x < y)
+	{ // iterates to draw the first sector
+		x++;
+		if (p < 0)// the mid point is inside the circle
+			p += 2 * x + 1;
+		else
+		{// the mid point is outside or at the circle
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+		glBegin(GL_POINTS);
+		glVertex2f(x1 + x, y1 + y);
+		glVertex2f(x1 - x, y1 + y);
+		glVertex2f(x1 + x, y1 - y);
+		glVertex2f(x1 - x, y1 - y);
+		glVertex2f(x1 + y, y1 + x);
+		glVertex2f(x1 - y, y1 + x);
+		glVertex2f(x1 + y, y1 - x);
+		glVertex2f(x1 - y, y1 - x);
+		glEnd();
+	}
+}
+
+void rotateCircle()
+{
+	int x = P[0], y = P[1], x_pivot = X[0], y_pivot = X[1];
+	midpointCircle();
+	int x_shifted = x - x_pivot;
+	int y_shifted = y - y_pivot;
+	int angle = 45;
+
+	x = x_pivot + (x_shifted * COS(angle) - y_shifted * SIN(angle)); //xcos@-ysin@
+	y = y_pivot + (x_shifted * SIN(angle) + y_shifted * COS(angle)); //xsin@+ycos@
+	printf("New Center: (%f, %f) ", x, y);
+
+	P[0] = x;
+	P[1] = y;
+
+	midpointCircle();
+}
+
+void display()
+{
+	glClearColor(1, 1, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(0, 0, 0);
+	rotateCircle();
+	glFlush();
+}
+
+
+int main(int argv, char** argc)
+{
+	glutInit(&argv, argc);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("window");
+	gluOrtho2D(-300, 300, -300, 300);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
+***************************************************************
